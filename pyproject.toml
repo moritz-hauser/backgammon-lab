@@ -1,0 +1,13 @@
+[project]
+name = "bg-lab"
+version = "0.1.0"
+dependencies = [
+    "gym-backgammon",
+]
+
+[build-system]
+requires = ["setuptools"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+where = ["src"]
