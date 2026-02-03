@@ -1,0 +1,104 @@
+@startuml bg_lab_class_diagram
+
+class Lab {
+    +simulate_matches(agent1: IAgent, agent2: IAgent, n_matches: int): SimulationResult
+}
+
+class Arena {
+    +compete(agent1: IAgent, agent2: IAgent): GameTrace
+}
+
+class GameReplayer {
+    +replay_game(trace: GameTrace): GameReplay
+}
+
+class GameReplayAnalyzer {
+    +analyze(replay: GameReplay): GameReport
+}
+
+interface IMetric {
+    +key: MetricKey
+    +evaluate(replay: GameReplay): MetricValue
+}
+
+class GameTrace <<dataclass>> {
+    +actions: List[Action]
+    +dice_rolls: List[DiceRoll]
+    +winner: AgentId
+    +first_to_move: AgentId
+}
+note bottom: Compact storage format
+
+class GameReplay <<dataclass>> {
+    +states: List[State]
+    +actions: List[Action]
+    +dice_rolls: List[DiceRoll]
+    +winner: AgentId
+    +first_to_move: AgentId
+}
+note bottom: Expanded representation\nfor analysis
+
+class GameReport <<dataclass>> {
+    +metrics: dict[MetricKey, MetricValue]
+    +winner: AgentId
+    +first_to_move: AgentId
+    +rounds: int
+}
+
+enum MetricKey {
+    ROUNDS,
+    POINTS,
+    LEAD,
+    AVG_DICE_SUM_PER_AGENT,
+    HITS_PER_AGENT,
+    TIMES_BLOCKED_PER_AGENT
+}
+
+note right of GameReport::metrics
+    MetricValue = Union[
+        int,
+        float,
+        dict[AgentId, int],
+        dict[AgentId, float]
+    ]
+end note
+
+class SimulationResult <<dataclass>> {
+    +reports: List[GameReport]
+    +wins_per_agent: dict[AgentId, int]
+    +games_played: int 
+}
+
+interface IAgent {
+    +get_id(): AgentId
+    +choose_action(observation, environment): Action
+}
+
+class AgentId <<dataclass>> {
+    +id: String
+}
+
+' Composition/Aggregation (has-a)
+SimulationResult *-- GameReport : contains
+IAgent *-- AgentId: has
+
+' Dependencies (uses)
+Lab ..> Arena : uses
+Lab ..> GameReplayer : uses
+Lab ..> GameReplayAnalyzer : uses
+Lab ..> SimulationResult : produces
+
+Arena ..> IAgent : uses
+Arena ..> GameTrace : produces
+
+GameReplayer ..> GameTrace : consumes
+GameReplayer ..> GameReplay : produces
+
+IMetric ..> MetricKey : uses
+GameReport ..> MetricKey : uses
+
+GameReplayAnalyzer ..> GameReplay : consumes
+GameReplayAnalyzer ..> GameReport : produces
+GameReplayAnalyzer ..> IMetric : uses
+
+@enduml

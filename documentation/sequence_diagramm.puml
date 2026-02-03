@@ -1,0 +1,62 @@
+@startuml bg_lab_sequence_diagram
+
+title Example with three metrics
+
+participant lab as l
+participant arena as a
+participant game_replayer as gr
+participant game_replay_analyzer as gra
+participant "x_metric : IMetric" as xm
+participant "y_metric : IMetric" as ym
+participant "z_metric : IMetric" as zm
+
+activate l
+
+group loop (n_matches)
+l -> a: compete(agent1, agent2)
+activate a
+l <<-- a: game_trace
+deactivate a
+end
+
+group loop (n_matches)
+l -> gr: replay_game(game_trace)
+activate gr
+l <<-- gr: game_replay
+deactivate gr
+
+l -> gra: game_replay
+activate gra
+
+gra -> xm: evaluate(game_replay)
+activate xm
+gra <<-- xm: metric_result
+deactivate xm
+
+gra -> ym: evaluate(game_replay)
+activate ym
+gra <<-- ym: metric_result
+deactivate ym
+
+gra -> zm: evaluate(game_replay)
+activate zm
+gra <<-- zm: metric_result
+deactivate zm
+
+l <<-- gra: game_report
+deactivate gra
+
+end
+
+l -> l: aggregate_reports(game_reports)
+note right
+    Aggregate metrics from all GameReports and 
+    return data as SimulationResult.
+end note
+create "simulation_report: SimulationReport" as sr
+l -> sr: <<create>>(game_reports, winrates, ...)
+
+
+hide footbox
+
+@enduml
