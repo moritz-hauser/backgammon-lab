@@ -2,6 +2,9 @@ from gym_backgammon.envs.backgammon import WHITE, BLACK
 import random
 from itertools import count
 import gym
+import logging
+
+log = logging.getLogger(__name__) 
 
 class Arena:
 
@@ -38,6 +41,7 @@ class Arena:
                 env.close()
                 # This may happen in case maximum amount of rounds is exceeded
                 if winner is None:
+                    log.warn(f"Failed to determine a winner in round {round_i}")
                     return None
                 return agents[winner]
         	
