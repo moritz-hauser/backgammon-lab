@@ -1,4 +1,4 @@
-from bg_lab.arena import Arena
+from bg_game.arena import Arena
 from bg_agents.random_agent import RandomAgent
 from bg_agents.iagent import IAgent
 import logging
