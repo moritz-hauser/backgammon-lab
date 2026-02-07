@@ -40,14 +40,15 @@ DIGITS = {
 NUM_SEP_L = ") "
 NUM_SEP_R = " ("
 
-class CliView():
+class CliView:
     """
     Implements Observer-Pattern to observe
     GameStateModel.
     """
 
-    def __init__(self, model: GameStateModel):
+    def __init__(self, model: GameStateModel, show_legal_actions: bool = False):
         self.model = model
+        self.show_legal_actions = show_legal_actions
         self.model.on_new_round_snapshot(self.on_round_snapshot)
         self.model.on_new_action_taken(self.on_new_action)
         self.model.on_game_over(self.on_game_over)
@@ -68,30 +69,27 @@ class CliView():
         actions_rendered: str = self._render_actions(rs.legal_actions)
         player_rendered: str = self._render_player(rs.player)
         board_rendered: str = self._render_board(ws=rs.world_state)
-
-        print("="*20 + f"{player_rendered} rolled dice: {dice_rendered}" + "="*20)
+    
+        print("="*10 + f"{player_rendered} rolled dice: {dice_rendered}" + "="*10)
         
-        print(f"OFF {self._render_player(WHITE)}: {self._render_off(rs.world_state, WHITE)}")
-        print(f"OFF {self._render_player(BLACK)}: {self._render_off(rs.world_state, BLACK)}")
+        colors: list[Color] = [WHITE, BLACK]
+        for color in colors:
+            if rs.world_state.off[color] != 0:
+                print(OFF_SYM + " " + self._render_off(rs.world_state, color))
         
         print(board_rendered)
 
-        print(f"BAR: {self._render_player(WHITE)}: {self._render_bar(rs.world_state, WHITE)}")
-        print(f"BAR: {self._render_player(BLACK)}: {self._render_bar(rs.world_state, BLACK)}")
+        for color in colors:
+            if rs.world_state.bar[color] != 0:
+                print(BAR_SYM + " " + self._render_bar(rs.world_state, color))
 
-        print("Available actions:")
-        print(actions_rendered) # TODO: display numbered - or let agents
-        """
-        TODO: 
-        - either display actions here numbered (overkill everytime)
-        - or let agent controlled by human display actions 
-        -- kinda bad separation of concerns but needs to control number output
-        -- + cli should not spam every action every time when an ai plays
-        """
+        if self.show_legal_actions:
+            print("Available actions:")
+            print(actions_rendered)
 
     def _display_action_taken(self, action: Action):
         action_rendered = self._render_action(action)
-        print(f"=> decided on action: {action_rendered}")
+        print(f"=> decided on action: {action_rendered}\n")
 
     def _display_winner(self, winner: Optional[Color]):
         if winner is None:
