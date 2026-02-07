@@ -11,7 +11,7 @@ MAX_ROUNDS = 2_000
 class MaxRoundsError(RuntimeError):
     pass
 
-class Arena:
+class GameController:
 
     def _roll_dice(self) -> Dice:
         return (random.randint(1,6), random.randint(1,6))

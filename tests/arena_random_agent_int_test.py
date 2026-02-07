@@ -1,11 +1,11 @@
-from bg_game.arena import Arena, MaxRoundsError
+from bg_game.game_controller import GameController, MaxRoundsError
 from bg_agents.random_agent import RandomAgent
 from bg_game.game_types import BLACK, WHITE, Color
 
 def test_many_games_rand_agents():
     matches = 100
     for match in range(matches):
-        arena: Arena = Arena()
+        arena: GameController = GameController()
 
         a1: RandomAgent = RandomAgent()
         a2: RandomAgent = RandomAgent()

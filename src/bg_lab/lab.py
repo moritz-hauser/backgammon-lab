@@ -1,4 +1,4 @@
-from bg_game.arena import Arena
+from bg_game.game_controller import GameController
 from bg_agents.random_agent import RandomAgent
 from bg_agents.iagent import IAgent
 import logging
@@ -8,7 +8,7 @@ log = logging.getLogger(__name__)
 
 class Lab:
 
-    def __init__(self, arena: Arena, replayer: GameReplayer, analyzer: GameReplayAnalyzer):
+    def __init__(self, arena: GameController, replayer: GameReplayer, analyzer: GameReplayAnalyzer):
         self.arena = arena
         self.replayer = replayer
         self.analyzer = analyzer
