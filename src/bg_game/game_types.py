@@ -21,6 +21,16 @@ Point: TypeAlias = tuple[int, Color | None]  # (checkers, color)
 Points: TypeAlias = tuple[Point, ...]  # length 24
 
 @dataclass(frozen=True, slots=True)
+class RoundSnapshot:
+    """
+    Snapshot of the game at some round
+    """
+    world_state: WorldState
+    player: Color
+    dice: Dice
+    legal_actions: list[Action]
+
+@dataclass(frozen=True, slots=True)
 class WorldState:
     """
     Default representation for a state of a backgammon game.

@@ -1,6 +1,13 @@
+from typing import Optional
 from bg_game.engine_adapter import EngineAdapter as Engine
-from bg_game.game_types import WHITE, BLACK, Dice, Color, WorldState, AgentPerspectiveState, Action
+from bg_game.game_types import (
+    WHITE, BLACK, 
+    Dice, Color, WorldState, 
+    AgentPerspectiveState, Action,
+    RoundSnapshot
+    )
 from bg_agents.iagent import IAgent
+from bg_game.game_state_model import GameStateModel
 import random
 import logging
 
@@ -13,11 +20,15 @@ class MaxRoundsError(RuntimeError):
 
 class GameController:
 
+    def __init__(self, model: GameStateModel):
+        self.model = model
+
     def _roll_dice(self) -> Dice:
         return (random.randint(1,6), random.randint(1,6))
     
     def _roll_for_opening(self)-> tuple[Dice, Color]:
         a, b = self._roll_dice()
+        
         # Roll until dices are not equal
         while a == b: 
             a, b = self._roll_dice()
@@ -28,7 +39,7 @@ class GameController:
         else:
             return (a,b), BLACK
         
-    def compete(self, white_agent: IAgent, black_agent: IAgent) -> Color:
+    def compete(self, white_agent: IAgent, black_agent: IAgent) -> Optional[Color]:
         engine: Engine = Engine()
 
         agents = {WHITE: white_agent, BLACK: black_agent}
@@ -54,6 +65,15 @@ class GameController:
             ws: WorldState = engine.get_state()
             ws_actions: list[Action] = engine.get_actions(current_color, dice)
             
+            # Update model
+            snapshot = RoundSnapshot(
+                world_state=ws,
+                player=current_color,
+                dice=dice,
+                legal_actions=ws_actions
+            )
+            self.model.update_round_snapshot(snapshot)
+
             # Blocked
             if not ws_actions:
                 continue
@@ -70,11 +90,20 @@ class GameController:
             
             # Turn agent's action agent back to objective perspective of the board
             ws_action = AgentPerspectiveState.aps_action_to_ws_action(aps_action, current_color)
+
+            # Update model with chosen action
+            self.model.update_action_taken(action_taken=ws_action)
+
             engine.step(
                 current_color, 
                 ws_action
                 )
         
+        winner: Optional[Color] = engine.winner()
+        
+        # Update model with winner
+        self.model.update_winner(winner)
+        
         assert engine.winner() is not None, "Excited gameloop unexpectedly."
-        return WHITE if engine.winner() == WHITE else BLACK
+        return winner
     
