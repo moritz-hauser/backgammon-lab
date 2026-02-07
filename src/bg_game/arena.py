@@ -39,7 +39,7 @@ class Arena:
         round = 0
         while engine.winner() is None:
             # Update player and round
-            current_color = BLACK if current_color == WHITE else BLACK
+            current_color = WHITE if current_color == BLACK else BLACK
             round += 1
 
             if round > MAX_ROUNDS:
