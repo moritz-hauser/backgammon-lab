@@ -33,6 +33,10 @@ source venv/bin/activate
 ```bash
 pip install -e .
 ```
+Alternatively, to install developer tools (such as pytest):
+```bash
+pip install -e ".[dev]"
+```
 
 This will install all declared dependencies.  
 
@@ -41,15 +45,15 @@ This will install all declared dependencies.
 
 For running tests:
 ```bash
-pip install pytest
+pip install -e ".[dev]"
 ```
 
 ## Quick Start
 ```python
-from bg_view.cli_view import CliView
-from bg_game.game_controller import GameController
 from bg_game.game_state_model import GameStateModel
 from bg_view.cli_view import CliView
+from bg_game.game_controller import GameController
+from bg_game.game_types import BLACK, WHITE
 from bg_agents.random_agent import RandomAgent
 
 # Setup Model-View-Controller
@@ -64,7 +68,6 @@ agents = {WHITE: RandomAgent(), BLACK: RandomAgent()}
 winner = gc.compete(white_agent=agents[WHITE], black_agent=agents[BLACK])
 ```
 
-Run the script for cli output.
 See `examples/` for more usage examples.
 
 ## Project Structure
