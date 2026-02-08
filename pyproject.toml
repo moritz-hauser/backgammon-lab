@@ -1,9 +1,6 @@
 [project]
 name = "bg-lab"
 version = "0.1.0"
-dependencies = [
-    "gym-backgammon",
-]
 
 [build-system]
 requires = ["setuptools"]
