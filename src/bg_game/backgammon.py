@@ -1,3 +1,4 @@
+# SOURCE: https://github.com/dellalibera/gym-backgammon
 import itertools
 from collections import namedtuple
 from typing import Optional
