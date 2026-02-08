@@ -6,7 +6,7 @@ A framework for developing and evaluating backgammon AI agents.
 
 Backgammon Lab provides a modular environment for testing different backgammon agents against each other. Built on top of [gym-backgammon](https://github.com/dellalibera/gym-backgammon), it offers tools for running matches, recording games, and analyzing agent performance.
 
-**Note:** Since we are not primarily interested in RL this project only uses the core backgammon engine without the gym implementation with an adapter to better suit the requirements of this project.
+**Note:** Since we are not primarily interested in RL this project only uses the core backgammon engine (`src/bg_game/backgammon.py`) (without the gym implementation) with an adapter to better suit the requirements of this project.
 
 ## Installation
 
@@ -35,7 +35,7 @@ pip install -e .
 ```
 
 This will install all declared dependencies.  
-Note: `gym-backgammon` must be available in the environment (e.g. installed from GitHub).
+
 
 ### Development Setup
 
@@ -72,8 +72,8 @@ See `examples/` for more usage examples.
 backgammon-lab/
 ├── src/
 │   ├── bg_agents/      # Agent implementations
-│   └── bg_lab/         # Components for analysis (Lab, etc.)
-│   └── bg_game/        # Core game engine (Engine, GameController, etc.)
+│   ├── bg_lab/         # Components for analysis (Lab, etc.)
+│   ├── bg_game/        # Core game engine (Engine, GameController, etc.)
 │   └── bg_view/        # Views (CLI, etc.)
 ├── tests/              # Unit tests
 ├── documentation/      # UML
@@ -88,9 +88,15 @@ Run tests with pytest:
 pytest
 ```
 
+Only run tests that are not marked slow:
+```bash
+pytest -m "not slow"
+```
+
 ## Development Status
 
 This project is in early development (v0.0.0). 
+
 ## License
 
 TBD
