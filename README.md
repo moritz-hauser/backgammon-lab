@@ -6,7 +6,7 @@ A framework for developing and evaluating backgammon AI agents.
 
 Backgammon Lab provides a modular environment for testing different backgammon agents against each other. Built on top of [gym-backgammon](https://github.com/dellalibera/gym-backgammon), it offers tools for running matches, recording games, and analyzing agent performance.
 
-**Note:** This project uses the legacy `gym-backgammon` package (based on OpenAI Gym 0.26), not the newer Gymnasium framework.
+**Note:** Since we are not primarily interested in RL this project only uses the core backgammon engine without the gym implementation with an adapter to better suit the requirements of this project.
 
 ## Installation
 
@@ -46,23 +46,25 @@ pip install pytest
 
 ## Quick Start
 ```python
-from bg_lab.lab import Lab
-from bg_lab.arena import Arena
+from bg_view.cli_view import CliView
+from bg_game.game_controller import GameController
+from bg_game.game_state_model import GameStateModel
+from bg_view.cli_view import CliView
 from bg_agents.random_agent import RandomAgent
 
-# Set up the lab
-arena = Arena()
-lab = Lab(arena)
+# Setup Model-View-Controller
+model = GameStateModel()
+cli = CliView(model)
+gc = GameController(model)
 
 # Create two agents
-agent1 = RandomAgent()
-agent2 = RandomAgent()
+agents = {WHITE: RandomAgent(), BLACK: RandomAgent()}
 
-# Run a match
-winner = lab.match_up(agent1, agent2)
-print(f"Winner: {winner}")
+# Let the agents compete
+winner = gc.compete(white_agent=agents[WHITE], black_agent=agents[BLACK])
 ```
 
+Run the script for cli output.
 See `examples/` for more usage examples.
 
 ## Project Structure
@@ -70,8 +72,11 @@ See `examples/` for more usage examples.
 backgammon-lab/
 ├── src/
 │   ├── bg_agents/      # Agent implementations
-│   └── bg_lab/         # Core framework (Arena, Lab, etc.)
+│   └── bg_lab/         # Components for analysis (Lab, etc.)
+│   └── bg_game/        # Core game engine (Engine, GameController, etc.)
+│   └── bg_view/        # Views (CLI, etc.)
 ├── tests/              # Unit tests
+├── documentation/      # UML
 ├── examples/           # Usage examples
 └── pyproject.toml      # Project configuration
 ```
