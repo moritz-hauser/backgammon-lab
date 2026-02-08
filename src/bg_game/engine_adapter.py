@@ -20,9 +20,8 @@ class EngineAdapter:
     def winner(self) -> Optional[Color]:
         """
         Warning:
-            winner() == False
-        if winner () == WHITE
-        => Check with: winner() is not None
+        - winner() evaluates to False if winner is WHITE!
+        => instead check with: winner() is not None
         """
         return self._winner
     

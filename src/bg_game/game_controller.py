@@ -39,7 +39,7 @@ class GameController:
         else:
             return (a,b), BLACK
         
-    def compete(self, white_agent: IAgent, black_agent: IAgent) -> Optional[Color]:
+    def compete(self, white_agent: IAgent, black_agent: IAgent) -> Color:
         engine: Engine = Engine()
 
         agents = {WHITE: white_agent, BLACK: black_agent}
@@ -104,6 +104,6 @@ class GameController:
         # Update model with winner
         self.model.update_winner(winner)
         
-        assert engine.winner() is not None, "Excited gameloop unexpectedly."
-        return winner
+        assert winner is not None, "Excited gameloop unexpectedly."
+        return winner 
     
