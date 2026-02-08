@@ -1,6 +1,10 @@
 import logging
 from typing import Optional
-from bg_game.game_types import NUM_CHECKERS_EACH, WorldState, Color, Action, Dice, NUM_POINTS, Point, WHITE, BLACK, BAR, OFF
+from bg_game.game_types import (
+    NUM_CHECKERS_EACH, WorldState, Color, 
+    Action, Dice, NUM_POINTS, Point, 
+    WHITE, BLACK, BAR, OFF
+    )
 from bg_game.backgammon import Backgammon
 
 log = logging.getLogger(__name__)
