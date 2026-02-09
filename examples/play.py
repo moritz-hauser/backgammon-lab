@@ -46,7 +46,7 @@ class CliControlledAgent(IAgent):
         # Print actions with index
         print("-- Legal actions:")
         for i, action in enumerate(actions, start=1):
-            print(f"[{self._render_number(i)}]: {self._render_action(action)}")
+            print(f"[{i}]: {self._render_action(action)}")
 
         # Ask player for input
         while True:
