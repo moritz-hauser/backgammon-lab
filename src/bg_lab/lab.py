@@ -16,7 +16,6 @@ class DuplicateMetricIdError(RuntimeError):
 
 class Lab:
 
-    # Allow caller to use his own model, in case of desired cli output
     def __init__(self):
         self.metrics: dict[str, IMetric] = {}  # id -> metric
         for metric in self._default_metrics():
@@ -69,8 +68,4 @@ class Lab:
             all_matches_data.append(match_metrics)
 
         return all_matches_data
-
-
-
-
         
