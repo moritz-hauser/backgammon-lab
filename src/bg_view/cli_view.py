@@ -51,7 +51,7 @@ class CliView:
         self.show_legal_actions = show_legal_actions
         self.model.on_new_round_snapshot(self.on_round_snapshot)
         self.model.on_new_action_taken(self.on_new_action)
-        self.model.on_game_over(self.on_game_over)
+        self.model.on_game_over(self.on_winner_updated)
     
     # Functions to execute on Model notification
     def on_round_snapshot(self, rs: RoundSnapshot):
@@ -60,8 +60,9 @@ class CliView:
     def on_new_action(self, action: Action):
         self._display_action_taken(action)
 
-    def on_game_over(self, winner: Optional[Color]):
-        self._display_winner(winner)
+    def on_winner_updated(self, winner: Optional[Color]):
+        if winner is not None:
+            self._display_winner(winner)
 
     # Methods to print rendered stuff
     def _display_round_snapshot(self, rs: RoundSnapshot):
