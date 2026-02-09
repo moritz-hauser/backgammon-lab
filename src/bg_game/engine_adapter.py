@@ -46,7 +46,7 @@ class EngineAdapter:
         Returns current state of the board in
         convenient representation.
         """
-        self._ensure_not_over()
+        #self._ensure_not_over()
 
         ws: WorldState = self._current_world_state()
         log.debug(f"Built WorldState from FeatureVector:\n{ws}")
