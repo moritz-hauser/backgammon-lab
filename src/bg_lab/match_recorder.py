@@ -5,7 +5,7 @@ from bg_game.game_types import (
     RoundSnapshot, Action, Color
 )
 
-RoundsData: TypeAlias = tuple[tuple[RoundSnapshot, Action], ...]
+RoundsData: TypeAlias = tuple[tuple[RoundSnapshot, Optional[Action]], ...]
 
 @dataclass (frozen=True)
 class MatchRecording:
@@ -21,13 +21,13 @@ class MatchRecorder:
         self.model.on_game_over(self.on_winner_updated)
 
         self.snapshots: list[RoundSnapshot] = []
-        self.actions_taken: list[Action] = []
+        self.actions_taken: list[Optional[Action]] = []
         self.winner: Optional[Color] = None
 
     def on_round_snapshot(self, rs: RoundSnapshot):
         self.snapshots.append(rs)
 
-    def on_new_action(self, action: Action):
+    def on_new_action(self, action: Optional[Action]):
         self.actions_taken.append(action)
 
     def on_winner_updated(self, winner: Optional[Color]):
@@ -35,7 +35,7 @@ class MatchRecorder:
     
     def get_recording(self) -> MatchRecording:
         assert len(self.actions_taken) > 0
-        assert len(self.actions_taken) == len(self.snapshots)
+        assert len(self.actions_taken) == len(self.snapshots), f"{len(self.actions_taken)} != {len(self.snapshots)}"
 
         n_rounds = len(self.actions_taken)
         rounds: RoundsData = tuple(zip(self.snapshots, self.actions_taken))

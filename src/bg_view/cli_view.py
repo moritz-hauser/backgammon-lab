@@ -18,6 +18,8 @@ BAR_SYM = "⏸️"
 RIGHT_ARROW = "➡️ "
 AND_SYM = "➕"
 
+BLOCKED = "❌ BLOCKED ❌"
+
 # Dice emojis are glitchy
 SINGLE_DICE = {
     1: "1",
@@ -57,7 +59,7 @@ class CliView:
     def on_round_snapshot(self, rs: RoundSnapshot):
         self._display_round_snapshot(rs)
 
-    def on_new_action(self, action: Action):
+    def on_new_action(self, action: Optional[Action]):
         self._display_action_taken(action)
 
     def on_winner_updated(self, winner: Optional[Color]):
@@ -88,9 +90,12 @@ class CliView:
             print("Available actions:")
             print(actions_rendered)
 
-    def _display_action_taken(self, action: Action):
-        action_rendered = self._render_action(action)
-        print(f"=> decided on action: {action_rendered}\n")
+    def _display_action_taken(self, action: Optional[Action]):
+        if action is None:
+            print(f"{RIGHT_ARROW} {BLOCKED}")
+        else:
+            action_rendered = self._render_action(action)
+            print(f"{RIGHT_ARROW} decided on action: {action_rendered}\n")
 
     def _display_winner(self, winner: Optional[Color]):
         if winner is None:

@@ -79,6 +79,7 @@ class GameController:
 
             # Blocked
             if not ws_actions:
+                self.model.update_action_taken(None)
                 continue
             
             # Get current players perspective on the board

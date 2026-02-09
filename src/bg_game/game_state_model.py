@@ -6,7 +6,7 @@ from bg_game.game_types import (
     )
 
 SnapshotObserver = Callable[[RoundSnapshot], None]
-ActionObserver = Callable[[Action], None]
+ActionObserver = Callable[[Optional[Action]], None]
 WinnerObserver = Callable[[Optional[Color]], None]
 
 class GameStateModel:
@@ -15,7 +15,7 @@ class GameStateModel:
     """
     def __init__(self):
         self.round_snapshot: RoundSnapshot
-        self.action_taken: Action
+        self.action_taken: Optional[Action]
         self.winner: Optional[Color] = None
 
         self.snapshot_observers: list[SnapshotObserver] = []
@@ -27,7 +27,7 @@ class GameStateModel:
         self.round_snapshot = round_snapshot
         self._notify_snapshot_observers()
 
-    def update_action_taken(self, action_taken: Action):
+    def update_action_taken(self, action_taken: Optional[Action]):
         self.action_taken = action_taken
         self._notify_action_observers()
 
