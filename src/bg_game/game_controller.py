@@ -42,6 +42,9 @@ class GameController:
     def compete(self, white_agent: IAgent, black_agent: IAgent) -> Color:
         engine: Engine = Engine()
 
+        # In case model still carries a winner from previous games
+        self.model.update_winner(None)
+
         agents = {WHITE: white_agent, BLACK: black_agent}
 
         dice, current_color = self._roll_for_opening()
