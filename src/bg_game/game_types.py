@@ -55,6 +55,40 @@ class WorldState:
 
     def amount_bar(self, color: Color) -> int:
         return self.bar[color]
+    
+    @staticmethod
+    def from_agent_perspective_state(aps: AgentPerspectiveState, me_color: Color) -> WorldState:
+        # Order based on color
+        ws_off = (aps.off_me, aps.off_enemy) if me_color == WHITE else (aps.off_enemy, aps.off_me)
+        ws_bar = (aps.bar_me, aps.bar_enemy) if me_color == WHITE else (aps.bar_enemy, aps.bar_me)
+
+        # Points
+        ws_points: list[Point] = []
+        aps_points: list[int] = list(aps.points)
+
+        enemy_color = BLACK if me_color == WHITE else WHITE
+
+        # Convert points in order of agent perspective
+        for amount_checkers in aps_points:
+            if amount_checkers < 0: # enemy-checkers
+                point: Point = (abs(amount_checkers), enemy_color)
+                ws_points.append(point)
+            elif amount_checkers > 0: # my checkers
+                point: Point = (amount_checkers, me_color)
+                ws_points.append(point)
+            else: # empty
+                ws_points.append((0, None))
+
+        # WHITE goes backwards in WS
+        if me_color == WHITE:
+            ws_points.reverse() 
+
+        return WorldState(
+            points=tuple(ws_points),
+            off=ws_off,
+            bar=ws_bar,
+        )
+
 
 @dataclass(frozen=True, slots=True)
 class AgentPerspectiveState:
