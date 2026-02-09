@@ -26,11 +26,11 @@ class TransitionModel:
         # Get WS representation of agents's perspective of the board
         before_ws = WorldState.from_agent_perspective_state(aps, COLOR)
 
-        # Build an engine in with the current board
+        # Engine uses same representation but lists
         ad = EngineAdapter()
-        ad.engine.bar = before_ws.bar
-        ad.engine.off = before_ws.off
-        ad.engine.board = before_ws.points
+        ad.engine.bar = list(before_ws.bar)
+        ad.engine.off = list(before_ws.off)
+        ad.engine.board = list(before_ws.points)
 
         # aps_action = ws_action because color is BLACK
         ad.step(COLOR, aps_action)
