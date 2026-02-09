@@ -6,12 +6,18 @@ from bg_game.game_controller import GameController, MaxRoundsError
 from bg_game.game_types import Color, WHITE, BLACK
 from bg_agents.random_agent import RandomAgent
 
+"""
+This is an example to illustrate how to build two agents,
+and have them compete.
+With command line visualization.
+"""
+
 # Model-View-Controller pattern
 model = GameStateModel()    # Stores information about current rounds and informs observers of changes
 cli = CliView(model)        # Observers model, prints state of the game accordingly
 gc = GameController(model)  # Manages match between two agents, updates the model
 
-# Winner will be returned as color, so it is important to remember which agent has which color
+# Winner will be returned as Color, so it is important to remember which agent has which Color
 agents: dict[Color, RandomAgent] = {WHITE: RandomAgent(), BLACK: RandomAgent()}
 
 # GameController::compete throws in case the maximum of rounds is exceeded
