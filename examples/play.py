@@ -7,7 +7,7 @@ from bg_game.game_types import (
     BAR, OFF
     )
 from bg_agents.random_agent import IAgent
-from bg_agents.utility_based_agent import UtilityBasedAgent
+from bg_agents.simple_utility_based_agent import SimpleUtilityBasedAgent
 
 """
 This script may be used to explore game mechanics by playing yourself.
@@ -63,7 +63,7 @@ class CliControlledAgent(IAgent):
                 print("Please enter a number or 'q'.")
         
 human = CliControlledAgent()
-ai = UtilityBasedAgent()
+ai = SimpleUtilityBasedAgent()
 
 # Human must be BLACK for WorldState to match AgentPerspectiveState (WHITE goes backwards in WorldState)
 agents: dict[Color, IAgent] = {WHITE: ai, BLACK: human}
