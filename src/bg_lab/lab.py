@@ -6,6 +6,7 @@ from bg_game.game_state_model import GameStateModel
 import logging
 from bg_lab.match_recorder import MatchRecorder, MatchRecording
 from bg_lab.imetric import IMetric, MetricResult
+from bg_lab.count_rounds_metric import CountRoundsMetric
 import pandas as pd
 
 MatchMetrics: TypeAlias = list[MetricResult]
@@ -24,7 +25,10 @@ class Lab:
     
     @classmethod
     def _default_metrics(cls) -> list[IMetric]:
-        return [] # TODO: Add default metrics here
+        # TODO: Add default metrics here
+        return [
+            CountRoundsMetric(),
+        ] 
     
     @classmethod
     def _check_metric_ids_unique(cls, metrics: list[IMetric]) -> bool:
@@ -51,6 +55,8 @@ class Lab:
         all_matches_data: list[MatchMetrics] = []
 
         for i in range(n_matches):
+            log.debug(f"Conducting match {i} / {n_matches}.")
+            
             # Avoid hidden state dependencies 
             model = GameStateModel()
             gc = GameController(model)
