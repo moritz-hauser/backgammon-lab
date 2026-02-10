@@ -13,6 +13,7 @@ from .hits_metric import HitsMetric
 from .winner_metric import WinnerMetric
 from .blocked_metric import BlockedMetric
 from .dice_metrics import DiceSumAvgMetric, DiceSumVarianceMetric, DoublesCountMetric
+from .first_to_move_metric import FirstToMoveMetric
 
 MatchMetrics: TypeAlias = list[MetricResult]
 
@@ -39,7 +40,8 @@ class Lab:
             HitsMetric(WHITE), HitsMetric(BLACK),
             DiceSumAvgMetric(WHITE), DiceSumAvgMetric(BLACK),
             DiceSumVarianceMetric(WHITE), DiceSumVarianceMetric(BLACK),
-            DoublesCountMetric(WHITE), DoublesCountMetric(BLACK)
+            DoublesCountMetric(WHITE), DoublesCountMetric(BLACK),
+            FirstToMoveMetric()
         ] 
     
     @classmethod
