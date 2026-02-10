@@ -102,6 +102,8 @@ class GameController:
                 current_color, 
                 ws_action
                 )
+            
+        log.info(f"Match over after {round} rounds.")
         
         winner: Optional[Color] = engine.winner()
         
