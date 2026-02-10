@@ -1,5 +1,6 @@
 from unittest.mock import Mock, MagicMock, patch, call
 import pytest
+import pandas as pd
 from bg_lab.lab import Lab, DuplicateMetricIdError
 from bg_lab.imetric import IMetric, MetricResult
 
@@ -32,7 +33,7 @@ def test_add_metric_duplicate_id_raises_error():
 
 
 def test_add_metrics_each_gets_called():
-    lab = Lab()
+    lab = Lab(include_defaults=False)
     
     # Create mock metrics
     mock_metric1 = Mock(spec=IMetric)
@@ -68,6 +69,7 @@ def test_add_metrics_each_gets_called():
         
         mock_recorder = Mock()
         mock_recording = Mock()
+        mock_recording.rounds = [Mock(), Mock(), Mock()]  # FIX: Mock the rounds attribute!
         mock_recorder.get_recording.return_value = mock_recording
         mock_recorder_class.return_value = mock_recorder
         
@@ -90,11 +92,13 @@ def test_add_metrics_each_gets_called():
         for call_args in mock_metric3.analyze.call_args_list:
             assert call_args[0][0] == mock_recording
         
-        # Verify structure of returned data
+        # FIX: Verify DataFrame structure instead of List[List[MetricResult]]
+        assert isinstance(result, pd.DataFrame)
         assert len(result) == n_matches
-        for match_metrics in result:
-            assert len(match_metrics) == 3
-            assert all(isinstance(mr, MetricResult) for mr in match_metrics)
+        assert list(result.columns) == ["metric_1", "metric_2", "metric_3"]
+        assert all(result["metric_1"] == 42)
+        assert all(result["metric_2"] == 3.14)
+        assert all(result["metric_3"] == "test")
 
 
 def test_compare_agents_returns_correct_structure():
@@ -114,16 +118,18 @@ def test_compare_agents_returns_correct_structure():
          patch('bg_lab.lab.MatchRecorder') as mock_recorder_class:
         
         mock_recorder = Mock()
-        mock_recorder.get_recording.return_value = Mock()
+        mock_recording = Mock()
+        mock_recording.rounds = [Mock()]  # FIX: Add rounds attribute
+        mock_recorder.get_recording.return_value = mock_recording
         mock_recorder_class.return_value = mock_recorder
         
         result = lab.compare_agents(mock_white_agent, mock_black_agent, n_matches=3)
         
+        # FIX: Check DataFrame instead of list
+        assert isinstance(result, pd.DataFrame)
         assert len(result) == 3
-        for match_metrics in result:
-            assert len(match_metrics) == 1
-            assert match_metrics[0].metric_id == "test_metric"
-            assert match_metrics[0].value == 100
+        assert "test_metric" in result.columns
+        assert all(result["test_metric"] == 100)
 
 
 def test_compare_agents_creates_fresh_instances_each_match():
@@ -137,7 +143,9 @@ def test_compare_agents_creates_fresh_instances_each_match():
          patch('bg_lab.lab.MatchRecorder') as mock_recorder_class:
         
         mock_recorder = Mock()
-        mock_recorder.get_recording.return_value = Mock()
+        mock_recording = Mock()
+        mock_recording.rounds = [Mock()]  # FIX: Add rounds attribute
+        mock_recorder.get_recording.return_value = mock_recording
         mock_recorder_class.return_value = mock_recorder
         
         n_matches = 5

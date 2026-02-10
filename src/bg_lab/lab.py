@@ -18,10 +18,11 @@ class DuplicateMetricIdError(RuntimeError):
 
 class Lab:
 
-    def __init__(self):
+    def __init__(self, include_defaults: bool=True):
         self.metrics: dict[str, IMetric] = {}  # id -> metric
-        for metric in self._default_metrics():
-            self.add_metric(metric)
+        if include_defaults:
+            for metric in self._default_metrics():
+                self.add_metric(metric)
     
     @classmethod
     def _default_metrics(cls) -> list[IMetric]:
