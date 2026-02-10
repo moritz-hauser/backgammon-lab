@@ -1,4 +1,4 @@
-from bg_lab.imetric import IMetric, MatchRecording
+from .imetric import IMetric, MatchRecording
 
 class CountRoundsMetric(IMetric):
     @property

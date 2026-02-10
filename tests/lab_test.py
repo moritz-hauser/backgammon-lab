@@ -102,7 +102,7 @@ def test_add_metrics_each_gets_called():
 
 
 def test_compare_agents_returns_correct_structure():
-    lab = Lab()
+    lab = Lab(include_defaults=False)
     
     mock_metric = Mock(spec=IMetric)
     mock_metric.id = "test_metric"
@@ -133,7 +133,7 @@ def test_compare_agents_returns_correct_structure():
 
 
 def test_compare_agents_creates_fresh_instances_each_match():
-    lab = Lab()
+    lab = Lab(include_defaults=False)
     
     mock_white_agent = Mock()
     mock_black_agent = Mock()

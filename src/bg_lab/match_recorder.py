@@ -12,6 +12,15 @@ class MatchRecording:
     rounds: RoundsData
     winner: Optional[Color]
 
+    def get_winner(self)-> Optional[Color]:
+        return self.winner
+    
+    def get_snapshots(self) -> tuple[RoundSnapshot, ...]:
+        return tuple([snapshot for snapshot, _ in self.rounds])
+    
+    def get_actions(self) -> tuple[Optional[Action], ...]:
+        return tuple([action for _, action in self.rounds])
+
 class MatchRecorder:
 
     def __init__(self, model: GameStateModel):

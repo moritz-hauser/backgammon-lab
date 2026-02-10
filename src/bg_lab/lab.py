@@ -4,10 +4,15 @@ from bg_agents.random_agent import RandomAgent
 from bg_agents.iagent import IAgent
 from bg_game.game_state_model import GameStateModel
 import logging
-from bg_lab.match_recorder import MatchRecorder, MatchRecording
-from bg_lab.imetric import IMetric, MetricResult
-from bg_lab.count_rounds_metric import CountRoundsMetric
+from bg_game.game_types import WHITE, BLACK
+from .match_recorder import MatchRecorder, MatchRecording
+from .imetric import IMetric, MetricResult
+from .count_rounds_metric import CountRoundsMetric
 import pandas as pd
+from .hits_metric import HitsMetric
+from .winner_metric import WinnerMetric
+from .blocked_metric import BlockedMetric
+from .dice_metrics import DiceSumAvgMetric, DiceSumVarianceMetric, DoublesCountMetric
 
 MatchMetrics: TypeAlias = list[MetricResult]
 
@@ -29,6 +34,12 @@ class Lab:
         # TODO: Add default metrics here
         return [
             CountRoundsMetric(),
+            WinnerMetric(),
+            BlockedMetric(WHITE), BlockedMetric(BLACK),
+            HitsMetric(WHITE), HitsMetric(BLACK),
+            DiceSumAvgMetric(WHITE), DiceSumAvgMetric(BLACK),
+            DiceSumVarianceMetric(WHITE), DiceSumVarianceMetric(BLACK),
+            DoublesCountMetric(WHITE), DoublesCountMetric(BLACK)
         ] 
     
     @classmethod
