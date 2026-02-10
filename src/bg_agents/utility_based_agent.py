@@ -44,7 +44,7 @@ class UtilityBasedAgent(IAgent):
         assert actions, "Received empty list of actions."
 
         best_action: Optional[Action] = None
-        best_utility: float = -100_000 # very small
+        best_utility: float = float('-inf')
 
         for action in actions:
             result_state = self.transition_model.result(state, action)
