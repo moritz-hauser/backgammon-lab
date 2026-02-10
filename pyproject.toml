@@ -3,6 +3,7 @@ name = "bg-lab"
 version = "0.1.0"
 dependencies = [
 "pandas>=2.0.0",
+"ipykernel",
 ]
 [project.optional-dependencies]
 dev = [
