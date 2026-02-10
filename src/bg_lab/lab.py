@@ -6,6 +6,7 @@ from bg_game.game_state_model import GameStateModel
 import logging
 from bg_lab.match_recorder import MatchRecorder, MatchRecording
 from bg_lab.imetric import IMetric, MetricResult
+import pandas as pd
 
 MatchMetrics: TypeAlias = list[MetricResult]
 
@@ -44,7 +45,7 @@ class Lab:
             white_agent: IAgent, 
             black_agent: IAgent, 
             n_matches: int=100
-        ) -> list[MatchMetrics]:
+        ) -> pd.DataFrame:
         log.info("Called method compare agents.")
 
         all_matches_data: list[MatchMetrics] = []
@@ -67,5 +68,19 @@ class Lab:
 
             all_matches_data.append(match_metrics)
 
-        return all_matches_data
+        # Convert to DataFrame
+        return self._to_dataframe(all_matches_data)
+    
+    def _to_dataframe(self, all_matches_data: list[MatchMetrics]) -> pd.DataFrame:
+        """Convert list of match metrics to DataFrame."""
+        rows = []
+        for match_idx, match_metrics in enumerate(all_matches_data):
+            row = {result.metric_id: result.value for result in match_metrics}
+            rows.append(row)
+        
+        df = pd.DataFrame(rows)
+        df.index = [f"match_{i}" for i in range(len(df))]
+        df.index.name = "match_id"
+        
+        return df
         
