@@ -5,4 +5,4 @@ logging.basicConfig(
     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s'
 )
 
-logging.getLogger('bg_lab.lab').setLevel(logging.DEBUG)
+logging.getLogger('bg_lab.lab').setLevel(logging.WARNING)
