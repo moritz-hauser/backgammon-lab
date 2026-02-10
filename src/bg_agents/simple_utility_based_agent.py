@@ -1,5 +1,5 @@
 from typing import Optional
-from bg_agents.iagent import IAgent
+from .iagent import IAgent
 from bg_game.game_types import (
     AgentPerspectiveState, Action,
 )
