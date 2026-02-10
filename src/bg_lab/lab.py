@@ -67,7 +67,7 @@ class Lab:
         all_matches_data: list[MatchMetrics] = []
 
         for i in range(n_matches):
-            log.debug(f"Conducting match {i} / {n_matches}.")
+            log.debug(f"Conducting match {i+1} / {n_matches}.")
             
             # Avoid hidden state dependencies 
             model = GameStateModel()
