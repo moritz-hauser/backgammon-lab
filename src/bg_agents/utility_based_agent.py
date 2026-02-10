@@ -14,9 +14,9 @@ log = logging.getLogger(__name__)
 
 class UtilityBasedAgent(IAgent):
 
-    def _utility(self, state: AgentPerspectiveState) -> int:
+    def _utility(self, state: AgentPerspectiveState) -> float:
         #raise NotImplementedError("Utility function has not been implemented")
-        utility: int = 0
+        utility: float = 0.0
 
         # Increase utility for hit enemies
         utility += state.bar_enemy
@@ -27,11 +27,11 @@ class UtilityBasedAgent(IAgent):
         for amount_checkers in state.points:
             match amount_checkers:
                 case 1: 
-                    utility -= 1    # Decrease utility for blops
+                    utility -= 1.2    # Decrease utility for blops
                 case 2: 
                     utility += 1    # Prefer small stacks over large ones
                 case 3:
-                    utility += 2    # Stack of 3 considered optimal (for flexibility)
+                    utility += 1.1  # Stack of 3 considered optimal (for flexibility)
 
         return utility
 
@@ -44,7 +44,7 @@ class UtilityBasedAgent(IAgent):
         assert actions, "Received empty list of actions."
 
         best_action: Optional[Action] = None
-        best_utility = -100_000 # very small
+        best_utility: float = -100_000 # very small
 
         for action in actions:
             result_state = self.transition_model.result(state, action)
