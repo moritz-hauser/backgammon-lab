@@ -181,3 +181,17 @@ class AgentPerspectiveState:
     ) -> Action:
         flipped = AgentPerspectiveState._flip_actions_if_white([action], me)
         return flipped[0]
+    
+    @staticmethod
+    def get_enemy_perspective(state: AgentPerspectiveState) -> AgentPerspectiveState:
+        """
+        Get same state from enemy's perspective.
+        """
+        return AgentPerspectiveState(
+            # Reverse order and sign
+            points=tuple(-p for p in state.points[::-1]),
+            off_me=state.off_enemy,
+            off_enemy=state.off_me,
+            bar_me=state.bar_enemy,
+            bar_enemy=state.bar_me
+        )
