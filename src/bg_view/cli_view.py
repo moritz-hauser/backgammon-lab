@@ -48,11 +48,13 @@ class CliView:
     GameStateModel.
     """
 
-    def __init__(self, model: GameStateModel, show_legal_actions: bool = False):
+    def __init__(self, model: GameStateModel, show_legal_actions: bool = False, show_action_decided: bool = True):
         self.model = model
         self.show_legal_actions = show_legal_actions
+        self.show_action_decided = show_action_decided
         self.model.on_new_round_snapshot(self.on_round_snapshot)
-        self.model.on_new_action_taken(self.on_new_action)
+        if show_action_decided:
+            self.model.on_new_action_taken(self.on_new_action)
         self.model.on_game_over(self.on_winner_updated)
     
     # Functions to execute on Model notification
@@ -72,7 +74,7 @@ class CliView:
         actions_rendered: str = self._render_actions(rs.legal_actions)
         player_rendered: str = self._render_player(rs.player)
         board_rendered: str = self._render_board(ws=rs.world_state)
-    
+
         print("="*10 + f"{player_rendered} rolled dice: {dice_rendered}" + "="*10)
         
         colors: list[Color] = [WHITE, BLACK]
@@ -85,6 +87,9 @@ class CliView:
         for color in colors:
             if rs.world_state.bar[color] != 0:
                 print(BAR_SYM + " " + self._render_bar(rs.world_state, color))
+
+        if not self.show_action_decided:
+            print()
 
         if self.show_legal_actions:
             print("Available actions:")
