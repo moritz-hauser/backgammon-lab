@@ -89,6 +89,7 @@ class GameController:
             current_agent = agents[current_color]
             aps_action: Action = current_agent.choose_action(
                 state=aps, 
+                dice=dice,
                 actions=aps_actions
                 )
             

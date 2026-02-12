@@ -11,7 +11,8 @@ def test_some_actions_random_agent_return_one_of_them():
         ]
     # Agent doesnt actually state, so this is OK here
     state = cast(AgentPerspectiveState, object())
-
-    chosen_action = agent.choose_action(state=state, actions=expected_actions)
+    dice = (1,2) # Random, should not be used
+    
+    chosen_action = agent.choose_action(state=state, dice=(1,2), actions=expected_actions)
     
     assert chosen_action in expected_actions

@@ -4,7 +4,7 @@ from bg_game.game_state_model import GameStateModel
 from bg_game.game_types import (
     Color, WHITE, BLACK, 
     Action, AgentPerspectiveState,
-    BAR, OFF
+    BAR, OFF, Dice
     )
 from bg_agents.random_agent import IAgent
 from bg_agents.simple_utility_based_agent import SimpleUtilityBasedAgent
@@ -42,7 +42,7 @@ class CliControlledAgent(IAgent):
             moves.append(f"({frm_render} {RIGHT_ARROW} {to_render})")
         return f" {AND_SYM} ".join(moves)   
 
-    def choose_action(self, state: AgentPerspectiveState, actions: list[Action]) -> Action:
+    def choose_action(self, state: AgentPerspectiveState, dice: Dice, actions: list[Action]) -> Action:
         assert actions, "Agent received no legal actions"
 
         # Print actions with index

@@ -2,7 +2,7 @@ from .iagent import IAgent
 from bg_game.game_types import (
     AgentPerspectiveState, Action,
     NUM_CHECKERS_EACH,
-    OFF
+    OFF, Dice
 )
 import logging
 
@@ -18,6 +18,7 @@ class MyAgent(IAgent):
     def choose_action(
             self, 
             state: AgentPerspectiveState, 
+            dice: Dice,
             actions: list[Action]
         ) -> Action:
         """

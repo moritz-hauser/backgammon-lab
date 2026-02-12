@@ -1,7 +1,8 @@
 from abc import ABC, abstractmethod
 from bg_game.game_types import (
     AgentPerspectiveState, Action,
-    WorldState, BLACK
+    WorldState, BLACK,
+    Dice,
     )
 from bg_game.engine_adapter import EngineAdapter
 
@@ -52,7 +53,8 @@ class IAgent(ABC):
     def choose_action(
             self, 
             state: AgentPerspectiveState, 
-            actions: list[Action]
+            dice: Dice,
+            actions: list[Action],
             ) -> Action:
         ...
     

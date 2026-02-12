@@ -1,7 +1,7 @@
 from typing import Optional
 from .iagent import IAgent
 from bg_game.game_types import (
-    AgentPerspectiveState, Action,
+    AgentPerspectiveState, Action, Dice,
 )
 import logging
 
@@ -37,7 +37,8 @@ class SimpleUtilityBasedAgent(IAgent):
     
     def choose_action(
             self, 
-            state: AgentPerspectiveState, 
+            state: AgentPerspectiveState,
+            dice: Dice, 
             actions: list[Action]
         ) -> Action:
         """
