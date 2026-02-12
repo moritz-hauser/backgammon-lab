@@ -5,4 +5,4 @@ logging.basicConfig(
     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s'
 )
 
-logging.getLogger('bg_gnubg.gnubg_adapter').setLevel(logging.DEBUG)
+logging.getLogger('bg_gnubg.gnubg_adapter').setLevel(logging.WARNING)
