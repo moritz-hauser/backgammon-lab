@@ -1,4 +1,3 @@
-import gnubg
 import base64
 import logging
 from typing import TypeAlias
@@ -20,6 +19,20 @@ POS_ID_LEN = 14     # Position ID is expected to be 14chars
 
 GNUBG_BAR = 25  # Encodings of bar and off on the board
 GNUBG_OFF = 0
+
+_gnubg = None
+
+def _require_gnubg():
+    global _gnubg
+    if _gnubg is None:
+        try:
+            import gnubg
+            _gnubg = gnubg
+        except ImportError as e:
+            raise ImportError(
+                "gnubg not installed. Install with: pip install -e '.[gnubg]'"
+            ) from e
+    return _gnubg
 
 class GnuBgAdapter():
 
@@ -85,6 +98,7 @@ class GnuBgAdapter():
 
     @classmethod
     def _board_from_position_id(cls, pos_id: str) -> GnubgBoard:
+        gnubg = _require_gnubg()
         # Method name is wrong, actually takes id!
         # = ASCII string insted of bytes
         return gnubg.board_from_position_key(pos_id)
@@ -121,6 +135,8 @@ class GnuBgAdapter():
         Uses the GNUBG-NN to calculate to optimal action in 
         a certain state.
         """
+        gnubg = _require_gnubg()
+
         pos_key: str = GnuBgAdapter._aps_to_position_key(aps)
         log.info(f"Position Key calculated: {pos_key}")
         assert len(pos_key) == POS_KEY_LEN
@@ -149,6 +165,8 @@ class GnuBgAdapter():
         Uses the GNUBG-NN to calculate to optimal action in 
         a certain state.
         """
+        gnubg = _require_gnubg()
+        
         log.info(f"Received aps: {aps}")
 
         board: GnubgBoard = GnuBgAdapter._gnubg_board_from_aps(aps)
