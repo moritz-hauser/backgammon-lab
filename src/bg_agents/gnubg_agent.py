@@ -17,13 +17,16 @@ class GnubgAgent(IAgent):
 
         action = GnuBgAdapter.best_action_from_aps(aps=state, dice=dice)
 
-        assert action in actions
+        # Convert to sets for comparison (order doesn't matter)
+        action_set = set(action) if action else set()
+        
+        # Find matching action in list
+        for valid_action in actions:
+            if set(valid_action) == action_set:
+                #return valid_action
+                return action # return original order of action
+        
+        # If no match found
+        raise AssertionError(f"{action} (as set: {action_set}) not found in {actions}")
 
         return action
-    
-    def _reconstruct_dice(self, action: Action) -> Dice:
-        # fails if only one move possible!
-        # can we fully reconstruct dice from actions?
-        # give agents dice? !!!
-        diff = [to - frm for frm, to in action]
-        return (diff[0], diff[1])
