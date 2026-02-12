@@ -6,6 +6,8 @@ A framework for developing and evaluating backgammon AI agents.
 
 Backgammon Lab provides a modular environment for testing different backgammon agents against each other. Built on top of [gym-backgammon](https://github.com/dellalibera/gym-backgammon), it offers tools for running matches, recording games, and analyzing agent performance.
 
+To provide a strong enemy for benchmarks this project uses [gnubg-nn-pypi](https://github.com/reayd-falmouth/gnubg-nn-pypi/tree/main?tab=readme-ov-file). GNUBG is optional, and not required for core features.
+
 **Note:** Since we are not primarily interested in RL this project only uses the core backgammon engine (`src/bg_game/backgammon.py`) (without the gym implementation) with an adapter to better suit the requirements of this project.
 
 ## Installation
@@ -36,6 +38,10 @@ pip install -e .
 Alternatively, to install developer tools (such as pytest):
 ```bash
 pip install -e ".[dev]"
+```
+With GNU Backgammon support (optional):
+```bash
+pip install -e ".[gnubg]"
 ```
 
 This will install all declared dependencies.  
@@ -77,8 +83,10 @@ backgammon-lab/
 │   ├── bg_agents/      # Agent implementations
 │   ├── bg_lab/         # Components for analysis (Lab, etc.)
 │   ├── bg_game/        # Core game engine (Engine, GameController, etc.)
+│   ├── bg_gnubg/       # Adapter for GNUBG
 │   └── bg_view/        # Views (CLI, etc.)
 ├── tests/              # Unit tests
+├── typings/            # Type stubs for external libraries
 ├── documentation/      # UML
 ├── examples/           # Usage examples
 └── pyproject.toml      # Project configuration
@@ -94,6 +102,14 @@ pytest
 Only run tests that are not marked slow:
 ```bash
 pytest -m "not slow"
+```
+
+## VSCode
+Add to your workspace settings:
+```json
+{
+  "python.analysis.stubPath": "typings"
+}
 ```
 
 ## Development Status
