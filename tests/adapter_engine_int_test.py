@@ -11,17 +11,18 @@ from bg_game.game_types import (
     BAR, OFF,
 )
 
+def _empty_points_list() -> list[Point]:
+        empty_point: Point = (0, None)
+        return [empty_point] * NUM_POINTS
+
+def _empty_points() -> Points:
+    return tuple(_empty_points_list())
+
 def _initial_ws() -> WorldState:
     """
     Returns expected initial WorldState.
     As of official Backgammon rules.
     """
-    def _empty_points_list() -> list[Point]:
-        empty_point: Point = (0, None)
-        return [empty_point] * NUM_POINTS
-
-    def _empty_points() -> Points:
-        return tuple(_empty_points_list())
     
     two_white: Point = (2, WHITE)
     two_black: Point = (2, BLACK)
@@ -239,3 +240,4 @@ def test_game_reaches_bar_and_enters(capsys):
     assert ws.points[21] == (1, WHITE)
     assert ws.bar[WHITE] == 0
     assert ws.off[WHITE] == 0
+    
