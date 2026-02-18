@@ -3,6 +3,7 @@ name = "bg-lab"
 version = "0.1.0"
 dependencies = [
 "pandas>=2.0.0",
+"matplotlib>=3.5.0",
 ]
 [project.optional-dependencies]
 gnubg = ["gnubg"]
