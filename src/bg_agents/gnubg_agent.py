@@ -2,6 +2,9 @@ from bg_agents.iagent import IAgent
 from bg_game.game_types import Action, AgentPerspectiveState, Dice
 from bg_gnubg.gnubg_adapter import GnuBgAdapter
 
+import logging
+
+log = logging.getLogger(__name__) 
 
 class GnubgAgent(IAgent):
     """
@@ -26,7 +29,26 @@ class GnubgAgent(IAgent):
                 #return valid_action
                 return action # return original order of action
         
-        # If no match found
-        raise AssertionError(f"{action} (as set: {action_set}) not found in {actions}")
+        # If no match found:
+        #raise AssertionError(f"{action} (as set: {action_set}) not found in {actions}")
 
+        """
+        NOTE:
+        - backgammon.py has a bug where dice(1,1) during bearing-off 
+          does not generating moves to OFF
+        - Engine can still execute the move, but it wont be in legal_action
+        """
+
+        log.warning(f"""
+                    Desired action:
+                    \n{action} 
+                    \nis not in list of legal actions:
+                    \n{actions}
+                    \nCurrentState:
+                    \n{state}
+                    \nCurrent Dice:\n
+                    {dice}
+                    """)
+        
         return action
+    
