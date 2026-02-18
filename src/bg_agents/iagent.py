@@ -58,3 +58,10 @@ class IAgent(ABC):
             ) -> Action:
         ...
     
+    def on_game_over(self, won: bool) -> None:
+        """
+        This is method is used to inform the agent when the game has ended.
+        May be used to reset instance variables, or adapt strategy
+        over multiple game.
+        """
+        pass
