@@ -112,5 +112,10 @@ class GameController:
         self.model.update_winner(winner)
         
         assert winner is not None, "Excited gameloop unexpectedly."
+
+        # Inform agents
+        agents[WHITE].on_game_over(won=winner==WHITE)
+        agents[BLACK].on_game_over(won=winner==BLACK)
+
         return winner 
     
