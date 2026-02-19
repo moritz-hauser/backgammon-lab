@@ -26,12 +26,12 @@ def starting_weights() -> np.ndarray:
     """
     weight = np.empty(AMOUNT_FEATURES)
     
-    # Estimate conservatively 
-    weight[BLOPS] = -0.1
-    weight[OFF_ME] = 0.1
-    weight[OFF_ENEM] = -0.1
-    weight[BAR_ME] = -0.1
-    weight[BAR_ENEM] = 1.0
+    # May kickstart by estimating
+    weight[BLOPS] = 0.0
+    weight[OFF_ME] = 0.0
+    weight[OFF_ENEM] = 0.0
+    weight[BAR_ME] = 0.0
+    weight[BAR_ENEM] = 0.0
 
     return weight
 
