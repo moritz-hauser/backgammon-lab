@@ -13,7 +13,7 @@ import logging
 
 log = logging.getLogger(__name__) 
 
-MAX_ROUNDS = 2_000
+MAX_ROUNDS = 5_000
 
 class MaxRoundsError(RuntimeError):
     pass
