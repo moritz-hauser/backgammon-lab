@@ -114,7 +114,7 @@ class TDAgent(IAgent):
             return
         
         # arbitrary, TODO decide 
-        ALPHA = 0.1 
+        ALPHA = 0.01 
 
         # large if underestimated -> must increase weights
         td_error = new_utility - self.previous_utility
