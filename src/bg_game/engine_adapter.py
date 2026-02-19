@@ -1,4 +1,5 @@
 import logging
+import random
 from typing import Optional
 from bg_game.game_types import (
     NUM_CHECKERS_EACH, WorldState, Color, 
@@ -81,6 +82,10 @@ class EngineAdapter:
 
         engine_actions = list(self.engine.get_valid_plays(agent_color, engine_dice))
         actions: list[Action] = self._convert_actions(engine_actions)
+
+        # Make sure order is random 
+        random.shuffle(actions)
+
         log.debug(f"Received Dice: {dice} (handing over {engine_dice}) -> received valid actions:\n{actions}")
         return actions
     
