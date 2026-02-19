@@ -3,6 +3,7 @@ from bg_game.game_types import (
     AgentPerspectiveState,
     Action,
     Dice,
+    NUM_CHECKERS_EACH,
 )
 import logging
 import numpy as np
@@ -40,14 +41,26 @@ def feature_functions() -> np.ndarray:
     """
     For each feature a function to extract
     it from a given AgentPerspectiveState.
-    """
-    functions = [lambda s: None] * AMOUNT_FEATURES
 
-    functions[BLOPS] = lambda s: s.points.count(1)
-    functions[OFF_ME] = lambda s: s.off_me
-    functions[OFF_ENEM] = lambda s: s.off_enemy
-    functions[BAR_ME] = lambda s: s.bar_me
-    functions[BAR_ENEM] = lambda s: s.bar_enemy
+    Features should be roughly on the same scale, to avoid 
+    large features (like off_count) to dominate.
+    For example:
+    When bar_me is 1 and off_me is 8, this affects off way
+    stronger, even though the checker on bar is usually the
+    one that makes the position bad.
+    """
+    functions = [lambda s: 0.0 for _ in range(AMOUNT_FEATURES)]
+
+    # We treat everything greater than 4 the same, 
+    # making the low numbers more impactful
+    functions[BLOPS] = lambda s: min(s.points.count(1)/5, 1.0)
+
+    functions[OFF_ME] = lambda s: s.off_me / NUM_CHECKERS_EACH
+    functions[OFF_ENEM] = lambda s: s.off_enemy / NUM_CHECKERS_EACH
+
+    # Same rationale as for BLOPS above
+    functions[BAR_ME] = lambda s: min(s.bar_me/4, 1.0)
+    functions[BAR_ENEM] = lambda s: min(s.bar_enemy/4, 1.0)
 
     return np.array(functions)
 
@@ -107,7 +120,11 @@ class TDAgent(IAgent):
 
     
     def _update_weights(self, new_utility: float):
-        # w <- w + alpha * TDerror * feature
+        # w += alpha * TDerror * feature
+        # instead:
+        # w += alpha * TDerror * eligibility_trace
+        # where et measures how active a feature was in past couple rounds
+        # to remember past moves
         
         # Cant update weights at first round
         if not self.previous_features:
