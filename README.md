@@ -8,7 +8,12 @@ Backgammon Lab provides a modular environment for testing different backgammon a
 
 To provide a strong enemy for benchmarks this project uses [gnubg-nn-pypi](https://github.com/reayd-falmouth/gnubg-nn-pypi/tree/main?tab=readme-ov-file). GNUBG is optional, and not required for core features.
 
-**Note:** Since we are not primarily interested in RL this project only uses the core backgammon engine (`src/bg_game/backgammon.py`) (without the gym implementation) with an adapter to better suit the requirements of this project.
+## Key Features
+
+- **Decoupled Architecture:** Clean Model-View-Controller (MVC) structure separating game logic from views and agent policies.
+- **Pluggable AI Agents:** Easily implement and benchmark custom heuristics, RL models, or baseline algorithms against external engines.
+- **GNU Backgammon Integration:** Includes a wrapper/adapter for `gnubg-nn-pypi` to provide high-level benchmarks against expert-level Neural Network evaluations.
+- **Developer-Ready:** Fully type-hinted, includes custom type stubs, and features a complete `pytest` test suite.
 
 ## Installation
 
